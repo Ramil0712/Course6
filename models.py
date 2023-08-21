@@ -25,7 +25,7 @@ class BaseItem(object):
         return self.__class__
 
     def _done_status_repr(self):
-        return '+' if self.done is True else '-'
+        return '+' if self.done else '-'
 
     @classmethod
     def construct(cls):
@@ -68,11 +68,21 @@ class ToBuyItem(BaseItem):
 
 
 class ToReadItem(BaseItem):
-    pass
+    def __init__(self, heading, url):
+        super(ToReadItem, self).__init__(heading)
+        self.url = url
+
+    def __str__(self):
+        return '{} ToRead: {} for {}'.format(
+            '+' if self.done else '-',
+            self.heading,
+            self.url,
+        )
 
     @classmethod
     def construct(cls):
         input_function = get_input_function()
         heading = input_function('Input heading: ')
-        url = input_function('Input url: ')
+        url = input_function('Input URL: ')
         return ToReadItem(heading, url)
+

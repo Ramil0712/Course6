@@ -12,8 +12,8 @@ import sys
 from commands import (
     ListCommand,
     NewCommand,
-    # ExitCommand,
-    # DoneCommand,
+    ExitCommand,
+    DoneCommand,
     UndoneCommand,
     UserExitException,
 )
