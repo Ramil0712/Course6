@@ -34,9 +34,8 @@ class BaseItem(object):
 
 class ToDoItem(BaseItem):
     def __str__(self):
-        done_status = self._done_status_repr()
         return '{} ToDo: {}'.format(
-            done_status,
+            '+' if self.done else '-',
             self.heading
         )
 
@@ -73,7 +72,7 @@ class ToReadItem(BaseItem):
         self.url = url
 
     def __str__(self):
-        return '{} ToRead: {} for {}'.format(
+        return '{} ToRead: {} {}'.format(
             '+' if self.done else '-',
             self.heading,
             self.url,

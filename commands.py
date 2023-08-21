@@ -13,7 +13,6 @@ from utils import get_input_function
 
 
 class BaseCommand(object):
-    done = None
     @staticmethod
     def label():
         raise NotImplemented()
@@ -87,7 +86,7 @@ class NewCommand(BaseCommand):
         selected_key = None
 
         def give_me_num():
-            selection = int(input_function('Input number'))
+            selection = int(input_function('Input number: '))
             selected_key = list(classes.keys())[selection]
             return selected_key
 
@@ -115,39 +114,30 @@ class ExitCommand(BaseCommand):
 
 
 class DoneCommand(BaseCommand):
+    state = True
     @staticmethod
     def label():
         return 'done'
 
     def perform(self, objects, *args, **kwargs):
-        if len(objects) == 0:
-            print('There are no items in storage.')
-            return
+        ListCommand.perform(self, objects)
 
-        for index, obj in enumerate(objects):
-            # print('{}: {} {}'.format(index, '+' if obj.done is True else '-', str(obj)))
-            print('{}: {}'.format(index, str(obj)))
-
-        selection = int(input('Input number'))
-        objects[selection].done = True
+        try:
+            selection = int(input('Input number: '))
+            objects[selection].done = self.state
+        except IndexError:
+            print('Wrong index ')
+        except ValueError:
+            print('Input number')
 
 
 class UndoneCommand(DoneCommand):
+    state = False
     @staticmethod
     def label():
         return 'undone'
 
-    def perform(self, objects, *args, **kwargs):
-        if len(objects) == 0:
-            print('There are no items in storage.')
-            return
 
-        for index, obj in enumerate(objects):
-            # print('{}: {} {}'.format(index, '+' if obj.done is True else '-', str(obj)))
-            print('{}: {}'.format(index, str(obj)))
-
-        selection = int(input('Input number'))
-        objects[selection].done = False
 
 
 
